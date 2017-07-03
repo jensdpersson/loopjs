@@ -1,0 +1,179 @@
+<html>
+  <head>
+    <title>Loop.js</title>
+    <style>
+      a {color: blue}
+      a:visited {color: blue;}
+      div.top {
+        margin-left: 5%;
+        margin-right: 5%;
+        border: 3px solid gray;
+        border-radius:10px;
+        padding: 10px;
+        background-color: lightgrey;
+      }
+      div.main {
+        float:left;
+        min-width: 70%;
+      }
+      div.help {
+        float: right;
+        min-width: 20%;
+      }
+      div.title {
+        text-align: center;
+      }
+      div.example {
+        border: 1px black solid;
+        font-family: monospace;
+        font-weight: bold;
+        color: green;
+        font-size: larger;
+        background-color: khaki;
+        padding: 5px;
+        margin-top: 5px;
+        white-space: pre-wrap;
+      }
+      div.topic {
+        margin-top: 20px;
+        padding: 5px;
+        //border-radius:10px;
+        //border: 1px black solid;
+      }
+      .topic > a[name] {
+        font-weight: bold;
+        font-style: italic;
+      }
+    </style>
+  </head>
+  <body>
+
+    <div class="top main">
+      <div class="title"><h2>Loop.js</h2></div>
+      <div>
+        Loop.js is a very small, but powerful, utility for looping
+        over <a href="#arrayLike">array-like objects</a>. It enables the classical functional
+        patterns like <a href="#map">map</a>, <a href="#filter">filter</a>, <a href="#fold">fold</a> and <a href="#find">find</a> with a single simple operation and features the ability to break out of the loop early.
+      </div>
+
+      <div class="topic">The <a name="loopOperations">lo</a> object (for loop-operations, or something) is passed into the callback function each lap in the loop. It provides access to the loop state and controls the looping.
+      <div class="example">
+        var result = loop(<a href="#arrayLike">arrayLike</a>, <a href="#result">defaultResult</a>, function(<a href="#loopOperations">lo</a>){
+          var theCurrentItem = lo.<a href="#item">item</a>;
+          var theCurrentIndex = lo.<a href="#index">index()</a>;
+          var theResultSoFar = lo.<a href="#result">result</a>; //Starts with the value of the defaultResult parameter, and returned at end of iteration
+          var isLastItemInTheArray = lo.isLast();
+          lo.<a href="stop">stop()</a>; //break out of loop
+        });
+      </div></div>
+
+      <div class="topic">
+        The <a name="result">default result</a> parameter is placed as the <a name="result">lo.result</a> property. When looping ends, either because lo.<a href="#stop">stop()</a> was called or because lo.index() has reached the length of the input, the lo.result property is returned from the loop function. Loopjs makes no special assumptions on lo.result, any iteration in the loop may change, replace or update lo.result as it sees fit.
+      </div>
+
+      <div class="topic">If the first parameter is missing then <i>this</i> is used, so you can set the loop function to a property on an (<a href="#arrayLike">array-like</a>) object and do:
+      <div class="example">
+        var obj = [1,2,3];
+        obj.loop = loop;
+        var result = obj.loop(0, function(<a href="#loopOperations">lo</a>){
+          lo.result += lo.item;
+        }
+      </div></div>
+
+      <div class="topic">If the second parameter is also missing the lo.<a name="result">result</a> property will be null on the first lap. If you loop the array for some side effect rather than the return value you can let it stay null. Or set it to something while looping.
+      <div class="example">
+        var obj = [1,2,3];
+        obj.loop = loop;
+        var result = obj.loop(function(<a href="loopOperations">lo</a>){
+          //lo.result begins as null
+        }
+      </div></div>
+
+      <div class="topic">The lo.<a name="index">index()</a> method return the current index in the array; this is sometimes useful.
+      <div class="example">
+        var nums = [
+            4, 11, 2, 26;
+        ];
+        var sumOfEvenPositions = loop(nums, 0, function(lo){
+          if(lo.index() % 2 == 0){
+            lo.result += lo.item;
+          }
+        });
+        alert('Sum is ' + sumOfEvenPositions);
+      </div>
+    </div>
+
+      <div class="topic">The lo.<a name="item">item</a> property contains the item at the current position in the array. The lo.<a name="stop">stop()</a> method terminates the iteration.
+      <div class="example">
+        var apes = [
+            'Orangutang', 'Gorilla', 'Schimpanzee', 'Bonobo';
+        ];
+        var firstWithoutO = loop(apes, false, function(lo){
+          if(lo.item.toLowerCase().includes('o')){
+            lo.result = lo.item;
+            lo.stop();
+          }
+        });
+        if(firstWithout0){
+          alert('Found an ape without the letter o!');
+        }
+      </div></div>
+
+
+
+      <div class="topic">
+        <a name="arrayLike">Array-like objects</a> have a length property and properties accessible through bracket-syntax:
+        <div class="example">var leng = arrayLike.length;
+var fourth = arrayLike[3];</div>
+      </div>
+
+      <div class="topic">
+        <a name="map">Mapping arrays</a>, i.e, creating a new array from the result of some operation done on each element in an another, is done with loopjs by letting the <a href="#result">default result</a> be an empty array and then push the result value in each lap of the loop.
+        <div class="example">var mapped = loop(inputArray, [], function(lo){
+          lo.result.push(someOperation(lo.item));
+        });</div>
+      </div>
+
+      <div class="topic">
+        <a name="filter">Filtering arrays</a>, i.e, creating a new array containing some elements of another array, but not necessarily all, is done with loopjs by letting the <a href="#result">default result</a> be an empty array and then push just the values you want to retain.
+        <div class="example">var filtered = loop(inputArray, [], function(lo){
+          if(someCriterion(lo.item)){
+            lo.result.push(lo.item);
+          }
+        });</div>
+      </div>
+
+      <div class="topic">You can of course both filter and map in one go</h3>
+      <div class="example">
+var array = [
+    {name:'Angel', foundingMember:true},
+    {name:'Wolverine', foundingMember:false},
+    {name:'Iceman', foundingMember:true}
+];
+var founderNames = loop(array, [], function(lo){
+  if(lo.item.foundingMember){
+    lo.result.push(lo.item.name);
+  }
+});</div>
+
+      <div class="topic">
+        <a name="fold">Folding an array</a>, i.e, updating some result object somehow for each item in an array, is done with loopjs by setting the <a href="#result">default result</a> to some result object to update then update it for each item in the array.
+        <div class="example">
+var foldedResult = loop(inputArray, defaultResult, function(lo){
+    lo.result.updateSomehow(lo.item);
+});</div>
+      </div>
+
+      <div class="topic">
+        <a name="find">Finding an element in an array</a> is done with loopjs by checking each value in the loop and set the result to the correct value. The <a href="#result">default result</a> will then be returned if no lap in the loop sets the result.
+        <div class="example">
+var found = loop(inputArray, defaultResult, function(lo){
+    if(someCriterion(lo.item)){
+        lo.result = lo.item;
+    }
+});</div>
+      </div>
+
+    </div>
+  </body>
+</html>

@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet href="justice.xsl" type="text/xsl"?>
+<campaign xmlns="http://justice.hoverview.org/ns">
+  <import src="loop.js"/>
+  <test>
+    <synopsis>Check loaded</synopsis>
+    <action>
+      return !!loop;
+    </action>
+    <facit>true</facit>
+  </test>
+  <test>
+    <synopsis>Copy array</synopsis>
+    <action>
+      <![CDATA[
+        var input = ['gibbon', 'bonobo', 'lemur'];
+        var actual = loop(input, [], function(lo){
+          lo.result.push(lo.item);
+        });
+        return actual;
+      ]]>
+    </action>
+    <facit><![CDATA[gibbon,bonobo,lemur]]></facit>
+  </test>
+  <test>
+    <synopsis>Find element and stop searching</synopsis>
+    <action>
+      <![CDATA[
+      var input = [{name:'gibbon', verdict:'gibbon'},
+                   {name:'bonobo', verdict:'bonobo1'},
+                   {name:'bonobo', verdict:'bonobo2'}];
+      var actual = loop(input, 'default', function(lo){
+        console.log(lo.item);
+        if(lo.item.name == 'bonobo'){
+          lo.result = lo.item.verdict;
+          lo.stop();
+        }
+      });
+      return actual;
+      ]]>
+    </action>
+    <facit><![CDATA[bonobo1]]></facit>
+  </test>
+
+  <test>
+    <synopsis>Fold a sum</synopsis>
+    <action>
+      <![CDATA[
+      var input = [{name:'bonobo', nr:12},
+                   {name:'bonobo', nr:23},
+                   {name:'lemur', nr:19}];
+      var actual = loop(input, 0, function(lo){
+        if(lo.item.name == 'bonobo'){
+          lo.result += lo.item.nr;
+        }
+      });
+      return actual;
+      ]]>
+    </action>
+    <facit><![CDATA[35]]></facit>
+  </test>
+
+  <test>
+    <synopsis>Cannot loop a number</synopsis>
+    <action>
+      <![CDATA[
+      var input = 23;
+      try {
+        return loop(23, "Wrong", function(lo){});
+      } catch (e) {
+        return e;
+      }
+      ]]>
+    </action>
+    <facit><![CDATA[Cannot loop over 23]]></facit>
+  </test>
+
+  <test>
+    <synopsis>Missing first param is this</synopsis>
+    <action>
+      <![CDATA[
+      var input = [9, 5];
+      input.loop = loop;
+      return input.loop(12, function(lo){
+        lo.result += lo.item;
+      });
+      ]]>
+    </action>
+    <facit><![CDATA[26]]></facit>
+  </test>
+
+  <test>
+    <synopsis>Missing second param is null</synopsis>
+    <action>
+      <![CDATA[
+      var input = [9];
+      input.loop = loop;
+      return input.loop(function(lo){
+        if(lo.result == null){
+          lo.result = true;
+        }
+      });
+      ]]>
+    </action>
+    <facit><![CDATA[true]]></facit>
+  </test>
+
+  <test>
+    <synopsis>Only last loop returns true for isLast</synopsis>
+    <action>
+      <![CDATA[
+      var input = [5,4,3];
+      return loop(input, 0, function(lo){
+        if(lo.isLast()){
+          lo.result += lo.item;
+        }
+      });
+      ]]>
+    </action>
+    <facit><![CDATA[3]]></facit>
+  </test>
+
+</campaign>
