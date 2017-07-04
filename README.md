@@ -16,4 +16,5 @@ var result = loop(arrayLike, defaultResult, function(lo){
 </pre>
 
 <a href="https://jensdpersson.github.io/loopjs/readme.html">Full readme</a>
+<br />
 <a href="https://jensdpersson.github.io/loopjs/test.xml">Test suite (run in your browser)</a>
