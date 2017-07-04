@@ -6,9 +6,13 @@ features the ability to break out of the loop early.
 <pre>
 var result = loop(arrayLike, defaultResult, function(lo){ 
     var theCurrentItem = lo.item; 
-    var theCurrentIndex = lo.index(); 
-    var theResultSoFar = lo.result; //Starts with the value of the defaultResult parameter, and returned at end of iteration 
+    var theCurrentIndex = lo.index();
+    
+    //Starts with the value of the defaultResult parameter, returned at end of iteration
+    var theResultSoFar = lo.result;   
     var isLastItemInTheArray = lo.isLast(); 
     lo.stop(); //break out of loop 
 });
 </pre>
+
+<a href="https://jensdpersson.github.io/loopjs/readme.html">Full readme</a>
