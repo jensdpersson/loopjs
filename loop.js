@@ -1,7 +1,6 @@
 
 // loop.js
 // author jensdpersson@gmail.com
-
 function loop(){
 
   var obj = null;
@@ -48,3 +47,7 @@ function loop(){
 
   return lo.result;
 };
+
+if(exports){
+  exports.loop = loop;
+}
