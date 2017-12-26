@@ -1,0 +1,27 @@
+{
+  "name": "arrayloop",
+  "version": "0.1.1",
+  "description": "Loop.js is a very small, but powerful, utility for looping over array-like objects. It enables the classical functional patterns like map, filter, fold and find with a single simple operation and features the ability to break out of the loop early. ",
+  "main": "loop.js",
+  "scripts": {
+    "test": "node-test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jensdpersson/loopjs.git"
+  },
+  "keywords": [
+    "looping",
+    "iterator",
+    "enumerator",
+    "array",
+    "foreach",
+    "each"
+  ],
+  "author": "jensdpersson@gmail.com",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jensdpersson/loopjs/issues"
+  },
+  "homepage": "https://github.com/jensdpersson/loopjs"
+}
