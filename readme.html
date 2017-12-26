@@ -37,8 +37,8 @@
       div.topic {
         margin-top: 20px;
         padding: 5px;
-        //border-radius:10px;
-        //border: 1px black solid;
+        /*border-radius:10px;*/
+        /*border: 1px black solid;*/
       }
       .topic > a[name] {
         font-weight: bold;
@@ -170,6 +170,7 @@ var foldedResult = loop(inputArray, defaultResult, function(lo){
 var found = loop(inputArray, defaultResult, function(lo){
     if(someCriterion(lo.item)){
         lo.result = lo.item;
+        lo.stop();
     }
 });</div>
       </div>
